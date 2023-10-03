@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <title>Reconhecimento de Fala</title>
+</head>
+<body>
+    <h1>Reconhecimento de Fala</h1>
+    <button id="btn-start">Iniciar Reconhecimento</button>
+    <p id="result"></p>
+    
+    <input type="text" id="campoNome" class="campo" placeholder="Nome">
+    <input type="text" id="campoSobrenome" class="campo" placeholder="Sobrenome">
+    <input type="text" id="campoIdade" class="campo" placeholder="Idade">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#btn-start').click(function() {
+                $('#result').text("Aguardando comando...");
+                $.ajax({
+                    url: '/reconhecer',
+                    type: 'POST',
+                    success: function(data) {
+                        $('#result').text("Comando: " + data.comando);
+
+                        if (data.comando === "preencher campo nome") {
+                            $('#campoNome').val(data.nome);
+                        }
+                        else if(data.comando === "preencher campo sobrenome"){
+                            $('#campoSobrenome').val(data.sobrenome);
+                        }
+                        else if(data.comando === "preencher campo idade"){
+                            $('#campoIdade').val(data.idade);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
